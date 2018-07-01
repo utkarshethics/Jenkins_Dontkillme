@@ -1,0 +1,17 @@
+BUILD_ID=dontKillMe ssh "host_IP" /opt/apache-tomcat-8.5.31/bin/shutdown.sh
+BUILD_ID=dontKillMe ssh "host_IP"  /opt/backend/appmonitor/appmonitor.sh  -Stopbackend
+BUILD_ID=dontKillMe ssh "host_IP"  /opt/backend/appmonitor/appmonitor.sh  -Stoprest
+BUILD_ID=dontKillMe ssh "host_IP" rm -rf /opt/backend/ntap_sizer*
+BUILD_ID=dontKillMe ssh "host_IP" rm -rf /opt/backend/backend_error.cat
+BUILD_ID=dontKillMe ssh "host_IP" rm -rf /opt/backend/epic_data.sqlite
+BUILD_ID=dontKillMe ssh "host_IP" rm -rf /opt/backend/libbackend20.so
+BUILD_ID=dontKillMe scp -r /opt/appbin/${JOB_NAME}_${BUILD_NUMBER}/src root@"host_IP":/opt/backend
+BUILD_ID=dontKillMe tar -xvf  /opt/appbin/${JOB_NAME}_${BUILD_NUMBER}/ntap_sizer.tar 
+BUILD_ID=dontKillMe scp /opt/appbin/${JOB_NAME}_${BUILD_NUMBER}/ntap_sizer root@"host_IP":/opt/backend
+BUILD_ID=dontKillMe scp /opt/appbin/${JOB_NAME}_${BUILD_NUMBER}/libbackend20.so root@"host_IP":/opt/backend
+BUILD_ID=dontKillMe scp /opt/appbin/${JOB_NAME}_${BUILD_NUMBER}/backend_error.cat root@"host_IP":/opt/backend
+BUILD_ID=dontKillMe scp /opt/appbin/${JOB_NAME}_${BUILD_NUMBER}/epic_data.sqlite root@"host_IP":/opt/backend
+BUILD_ID=dontKillMe ssh "host_IP"  /opt/backend/appmonitor/appmonitor.sh  -Startbackend
+BUILD_ID=dontKillMe ssh "host_IP"  /opt/backend/appmonitor/appmonitor.sh  -Startrest
+sleep 195s
+BUILD_ID=dontKillMe ssh "host_IP" /opt/apache-tomcat-8.5.31/bin/startup.sh
